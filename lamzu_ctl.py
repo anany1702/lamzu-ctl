@@ -22,7 +22,7 @@ import subprocess
 import select
 
 LAMZU_VIDS = {"3554", "373e", "37b0"}
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 COMPX_RATE_TO_CODE = {
     125: 8,
