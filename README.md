@@ -2,7 +2,7 @@
 
 A zero-dependency Linux command-line utility for Lamzu wireless mice. It reads battery and charging status, queries firmware and polling rate, and changes the polling rate through the mouse's HID control interface.
 
-The utility supports the Compx 16-byte report protocol and both known revisions of the Aurora 64-byte feature-report protocol. It was built for the Lamzu Maya and discovers Lamzu devices using vendor IDs `3554`, `373e`, and `37b0`.
+The utility supports the Compx 16-byte report protocol and both known revisions of the Aurora 64-byte feature-report protocol. It was built around a Lamzu Maya/Compx receiver and discovers candidate Lamzu devices using vendor IDs `3554`, `373e`, and `37b0`.
 
 ## Features
 
@@ -108,9 +108,36 @@ python3 -m unittest discover -s tests -v
 
 ## Compatibility
 
-This is an unofficial, reverse-engineered utility. It was developed for the Lamzu Maya/Compx 4K receiver; other Lamzu models sharing the protocol may work but have not all been hardware-tested. Battery support uses Compx command `4` and the corresponding Aurora battery feature reports. Hardware revisions can differ, so include `lamzu diag` output when reporting compatibility issues.
+### Ubuntu versions
 
-The Compx battery layout was cross-checked against the open-source [Orpheus protocol implementation](https://github.com/lindestad/orpheus). The broader Lamzu configuration protocol has also been independently explored by [lamzu-cfg](https://github.com/LeadSun/lamzu-cfg).
+`lamzu-ctl` uses only the Python standard library, Linux `hidraw`, and `udevadm`. The following versions are covered by the project's Python compatibility target and CI matrix:
+
+| Ubuntu | Default Python | Project status |
+| --- | --- | --- |
+| 26.04 LTS | 3.14 | Supported by CI |
+| 24.04 LTS | 3.12 | Supported by CI; recommended |
+| 22.04 LTS | 3.10 | Supported by CI |
+| 20.04 LTS | 3.8 | Compatible and covered by CI; Ubuntu itself now requires Ubuntu Pro for security maintenance |
+
+Other Linux distributions should work when they provide Python 3.8 or newer, `udevadm`, and Linux `hidraw`. Windows and macOS are not supported because the transport uses Linux-specific `fcntl` ioctls and device nodes.
+
+### Mouse variants
+
+There are two different levels of support: a device may be *detected* by its vendor ID without every command being verified on that hardware revision.
+
+| Mouse / connection | USB VID:PID | Protocol expectation | Status |
+| --- | --- | --- | --- |
+| Maya/Atlantis-family Compx 4K/8K receiver | `3554:f510` | Compx report 8 | Primary target; battery/rate implementation available |
+| Maya/Atlantis-family wired | `3554:f50f` | Compx report 8 | Expected compatible; independently identified as report-8 hardware |
+| Atlantis-family 1K receiver | `3554:f50d` | Compx report 8 | Expected compatible; do not select rates above 1,000 Hz |
+| Maya X 8K receiver / wired | `373e:001e`, `373e:001c` | Aurora feature reports | Provisional; detected, not hardware-verified here |
+| INCA 8K receiver | `37b0:0010` | Aurora feature reports | Provisional; detected, not hardware-verified here |
+| Paro receiver / wired revisions | `37b0:000d`, `37b0:0001`, `37b0:0007`, `37b0:000e` | Aurora feature reports | Provisional; detected, not hardware-verified here |
+| Maya Champion receiver / wired | `37b0:0015`, `37b0:0011` | Aurora feature reports | Provisional; detected, not hardware-verified here |
+
+This is an unofficial, reverse-engineered utility. Battery support uses Compx command `4` and the corresponding Aurora battery feature reports. Firmware and receiver revisions can change behavior even when the product name is the same. Run `lamzu list` to see the detected VID:PID and include `lamzu diag` output with compatibility reports.
+
+The Compx battery layout was cross-checked against the open-source [Orpheus protocol implementation](https://github.com/lindestad/orpheus). The report-8 IDs and polling limits are independently documented by [lamzu-cfg](https://github.com/LeadSun/lamzu-cfg). The newer Maya X, INCA, Paro, and Champion VID:PIDs come from the community-maintained [Lamzu Aurora Linux udev rules](https://github.com/passionofcrisis/Lamzu-Webdriver-Aurora-Linux-fix); their inclusion documents discovery candidates, not a claim that every CLI operation has been tested on them.
 
 ## Uninstall
 

@@ -7,7 +7,7 @@ name = "lamzu-ctl"
 version = "0.1.0"
 description = "A zero-dependency Linux CLI for Lamzu mouse polling rate and battery status"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 license = "MIT"
 authors = [{ name = "anany1702" }]
 keywords = ["lamzu", "mouse", "hidraw", "linux", "battery"]

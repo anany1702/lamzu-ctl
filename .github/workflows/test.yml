@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.12", "3.13"]
+        # Match the default Python generations in Ubuntu 20.04 through 26.04.
+        python-version: ["3.8", "3.10", "3.12", "3.14"]
 
     steps:
       - uses: actions/checkout@v4
