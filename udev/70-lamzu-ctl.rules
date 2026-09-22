@@ -1,0 +1,5 @@
+# Permit the active desktop user to access known Lamzu HID interfaces.
+# TAG+="uaccess" grants a per-session ACL through systemd-logind.
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3554", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="373e", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="37b0", MODE="0660", TAG+="uaccess"

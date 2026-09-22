@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lamzu-ctl"
+version = "0.1.0"
+description = "A zero-dependency Linux CLI for Lamzu mouse polling rate and battery status"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "anany1702" }]
+keywords = ["lamzu", "mouse", "hidraw", "linux", "battery"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+]
+
+[project.scripts]
+lamzu = "lamzu_ctl:main"
+
+[project.urls]
+Homepage = "https://github.com/anany1702/lamzu-ctl"
+Issues = "https://github.com/anany1702/lamzu-ctl/issues"
+
+[tool.setuptools]
+py-modules = ["lamzu_ctl"]
